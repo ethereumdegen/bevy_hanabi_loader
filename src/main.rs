@@ -16,16 +16,30 @@ use bevy::{
         bloom::BloomSettings, clear_color::ClearColorConfig, tonemapping::Tonemapping,
     },
     log::LogPlugin,
-    prelude::*,
+    prelude::*, render::{settings::WgpuSettings, render_resource::WgpuFeatures, RenderPlugin}, utils::HashMap,
 };
+
+ 
+
 use bevy_inspector_egui::quick::WorldInspectorPlugin;
 
 use bevy_hanabi::prelude::*;
 use hanabi_effect_builder::HanabiEffectBuilder;
+use particle_types::{portal::PortalEffectBuilder, billboard::BillboardEffectBuilder};
 
-pub mod hanabi_effect_builder;
+mod hanabi_effect_builder;
+mod particle_types;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
+    
+    //need this ..
+  let mut wgpu_settings = WgpuSettings::default();
+    wgpu_settings
+        .features
+        .set(WgpuFeatures::VERTEX_WRITABLE_STORAGE, true);
+    
+    
+    
     App::default()
         .add_plugins(
             DefaultPlugins
@@ -33,6 +47,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     level: bevy::log::Level::WARN,
                     filter: "bevy_hanabi=warn,portal=trace".to_string(),
                 })
+                
+                 .set(RenderPlugin {
+                    render_creation: wgpu_settings.into(),
+                })  //need me for billboards !? 
+                
+                
                 .set(WindowPlugin {
                     primary_window: Some(Window {
                         title: "🎆 Hanabi — portal".to_string(),
@@ -50,7 +70,12 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     Ok(())
 }
 
-fn setup(mut commands: Commands, mut effects: ResMut<Assets<EffectAsset>>) {
+fn setup(
+    mut commands: Commands, 
+    mut effects: ResMut<Assets<EffectAsset>>,
+    asset_server: Res<AssetServer>
+    
+    ) {
     commands.spawn((
         Camera3dBundle {
             transform: Transform::from_translation(Vec3::new(0., 0., 25.)),
@@ -70,7 +95,13 @@ fn setup(mut commands: Commands, mut effects: ResMut<Assets<EffectAsset>>) {
 
   
     
-  let effect_builder = HanabiEffectBuilder {
+    
+    let mut image_handle_map:HashMap<String,Handle<Image>> = HashMap::new();
+    image_handle_map.insert( "cloud".into(),asset_server.load("cloud.png")  );
+    
+    
+    
+  let effect_builder = HanabiEffectBuilder::Portal(PortalEffectBuilder {
         name: "portal".into(),
         color_gradient_keys: vec![
             (0.0, Vec4::new(4.0, 4.0, 4.0, 1.0)),
@@ -87,16 +118,39 @@ fn setup(mut commands: Commands, mut effects: ResMut<Assets<EffectAsset>>) {
         particle_lifetime_max: 1.3,
         initial_velocity: Vec3::ZERO, // This might need to be adjusted based on specific effect requirements
         tangent_acceleration: 30.0,
-    };
+    });
 
-   
     
-    let effect_handle = effects.add( effect_builder.build() );
+    
+    let effect_handle = effects.add( effect_builder.build(  image_handle_map ).unwrap() );
     
     
 
     commands.spawn((
         Name::new("portal"),
+        ParticleEffectBundle {
+            effect: ParticleEffect::new(effect_handle),
+            transform: Transform::IDENTITY,
+            ..Default::default()
+        },
+    )); 
+    
+    
+  let effect_builder = HanabiEffectBuilder::Billboard(BillboardEffectBuilder {
+        name: "billboard".into(),
+        texture_name: "cloud".into()
+    });
+
+    let mut image_handle_map:HashMap<String,Handle<Image>> = HashMap::new();
+    image_handle_map.insert( "cloud".into(),asset_server.load("cloud.png")  );
+    
+    
+    let effect_handle = effects.add( effect_builder.build(  image_handle_map ).unwrap() );
+    
+    
+
+    commands.spawn((
+        Name::new("billboard"),
         ParticleEffectBundle {
             effect: ParticleEffect::new(effect_handle),
             transform: Transform::IDENTITY,
