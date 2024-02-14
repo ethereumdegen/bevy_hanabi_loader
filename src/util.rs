@@ -1,6 +1,6 @@
 
 use bevy::prelude::Vec3;
-use bevy_hanabi::{ExprWriter, ExprHandle, ScalarType};
+use bevy_hanabi::{ExprWriter, ExprHandle, ScalarType, VectorType};
 use serde::{Serialize, Deserialize};
 
 #[derive(Debug, Serialize, Deserialize, Clone)]
@@ -30,7 +30,7 @@ impl AlgebraicCurve {
 #[derive(Debug, Serialize, Deserialize, Clone)]
 pub enum AlgebraicVector {
     Constant( Vec3 ),
-    RandomScalar{offset: Vec3, multiplier: Vec3 },
+    RandomVector{offset: Vec3, multiplier: Vec3 },
 }
 impl AlgebraicVector {
     
@@ -38,7 +38,7 @@ impl AlgebraicVector {
         
         match self {
            AlgebraicVector::Constant(x) => writer.lit( x  ).expr(),
-           AlgebraicVector::RandomScalar { offset, multiplier } => (writer.lit(offset) + writer.lit(multiplier.x) * writer.rand(ScalarType::Float)).expr(),
+           AlgebraicVector::RandomVector { offset, multiplier } => (writer.lit(offset) + writer.lit(multiplier) * writer.rand(VectorType::VEC3F)).expr(),
         }
         
     } 

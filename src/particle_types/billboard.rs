@@ -9,22 +9,20 @@ use crate::util::{AlgebraicCurve, AlgebraicVector};
 #[derive(Debug, Serialize, Deserialize)]
 pub(crate) struct BillboardEffectBuilder {
     pub name: String,
-     
     
     pub age: AlgebraicCurve,
     pub lifetime: AlgebraicCurve,
-    
-    //pub position_spawn_radius: AlgebraicCurve,
-   // pub position: PositionModifierBuilder,
-   // pub velocity : VelocityModifierBuilder, 
+     
     pub position_center: AlgebraicVector,
     pub position_radius: AlgebraicCurve,
     
     pub velocity_center: AlgebraicVector,
-    pub velocity_speed: AlgebraicCurve,
-    
+    pub velocity_speed: AlgebraicCurve, 
     
     pub rotation : AlgebraicCurve, 
+    
+    pub color_base : Vec4,  
+    pub color_random_multiplier : Vec4, 
     
     pub alpha_cutoff : AlgebraicCurve, 
     
@@ -32,9 +30,6 @@ pub(crate) struct BillboardEffectBuilder {
 }
 
 
- 
- 
-//struct ModifierWrapper(Box<dyn InitModifier + Send + Sync + 'static>);
  
 
 
@@ -69,20 +64,7 @@ impl BillboardEffectBuilder   {
                     dimension: ShapeDimension::Volume,
                 };
             
-        
-     
-  /*  let init_pos  = match &self.position {
-        
-        PositionModifierBuilder::Sphere { center, radius } => {
-            SetPositionSphereModifier {
-                    center: center.clone().to_expr(&writer),
-                    radius: radius.clone().to_expr(&writer), //writer.lit(1.).expr(),
-                    dimension: ShapeDimension::Volume,
-                }
-            
-        }
-        
-    } ;*/
+         
     
      
     
@@ -92,12 +74,7 @@ impl BillboardEffectBuilder   {
                   speed: self.velocity_speed.clone().to_expr(&writer)
                 }     ;
  
-  
-   /* let init_vel = SetVelocityCircleModifier {
-        center: writer.lit(Vec3::ZERO).expr(),
-        axis: writer.lit(Vec3::Y).expr(),
-        speed: self.velocity.clone().to_expr(&writer) // (writer.lit(0.5) + writer.lit(0.2) * writer.rand(ScalarType::Float)).expr(),
-    };*/
+   
     
     
    // let position = self.position.clone().to_expr(&writer) ; //(writer.rand(ScalarType::Float) * writer.lit(std::f32::consts::TAU)).expr();
@@ -112,7 +89,7 @@ impl BillboardEffectBuilder   {
     // ImageSampleMapping::ModulateOpacityFromR so it will override
     // the alpha component of the color. Therefore we don't need to care about
     // rand() assigning a transparent value and making the particle invisible.
-    let color = writer.rand(VectorType::VEC4F).pack4x8unorm();
+    let color = (writer.rand(VectorType::VEC4F) * writer.lit(self.color_random_multiplier) +  writer.lit(self.color_base) ).pack4x8unorm();
     let init_color = SetAttributeModifier::new(Attribute::COLOR, color.expr());
 
     // Use the F32_0 attribute as a per-particle rotation value, initialized on
