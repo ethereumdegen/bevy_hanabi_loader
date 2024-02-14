@@ -12,13 +12,13 @@
 use serde::{Serialize, Deserialize};
 use bevy::{prelude::*, utils::HashMap};
 use bevy_hanabi::prelude::*;
-use std::error::Error;
+ 
 
 use crate::particle_types::{portal::PortalEffectBuilder, billboard::BillboardEffectBuilder};
 
 
-#[derive(Debug, Serialize, Deserialize)]
-pub(crate) enum HanabiEffectBuilder {
+#[derive(Asset, Debug, Serialize, Deserialize)]
+pub  enum HanabiEffectBuilder {
     Portal(PortalEffectBuilder),
     Billboard(BillboardEffectBuilder)
 }
@@ -38,3 +38,15 @@ impl HanabiEffectBuilder{
         
     }
 }
+
+impl TypePath for HanabiEffectBuilder {
+    
+      fn short_type_path() -> &'static str {
+        "bvfx"
+       }
+       fn type_path() -> &'static str {
+        "bvfx"
+       }
+    
+}
+
