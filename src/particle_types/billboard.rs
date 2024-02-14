@@ -6,8 +6,9 @@ use std::{error::Error, str::Bytes};
 
 use crate::util::{AlgebraicCurve, AlgebraicVector};
 
+
 #[derive(Debug, Serialize, Deserialize)]
-pub(crate) struct BillboardEffectBuilder {
+pub struct BillboardEffectBuilder {
     pub name: String,
     
     pub age: AlgebraicCurve,

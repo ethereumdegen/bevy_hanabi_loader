@@ -2,8 +2,11 @@
 name = "bevy_hanabi_loader"
 description = "A wrapper around bevy_hanabi that lets you define your vfx files in RON format and load them into bevy"
 license = "MIT"
-version = "0.2.2"
+version = "0.2.3"
 edition = "2021"
+
+[lib]
+name = "bevy_hanabi_loader"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
@@ -15,3 +18,9 @@ bevy_hanabi = "0.9.0"
 image = "0.24.8"
 ron = "0.8.1"
 serde = { version = "1.0", features = ["derive"] }
+
+
+
+[[bin]]
+name = "basic"
+path = "src/examples/basic.rs"

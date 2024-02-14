@@ -33,4 +33,4 @@ BillboardEffectBuilder(
 
 
 
-Then you can load it... see src/main 
+Then you can load it... see src/examples/basic.rs 

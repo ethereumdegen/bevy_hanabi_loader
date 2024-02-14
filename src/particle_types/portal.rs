@@ -5,7 +5,7 @@ use bevy_hanabi::prelude::*;
 use std::error::Error;
 
 #[derive(Debug, Serialize, Deserialize)]
-pub(crate) struct PortalEffectBuilder {
+pub struct PortalEffectBuilder {
     pub name: String,
     pub color_gradient_keys: Vec<(f32, Vec4)>,
     pub size_gradient_keys: Vec<(f32, Vec2)>,
