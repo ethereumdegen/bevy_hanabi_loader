@@ -1,0 +1,17 @@
+BillboardEffectBuilder(
+    name: "CloudBillboard",
+    texture_name: "cloud",
+    
+    age: Constant(0.0),
+    lifetime: Constant(5.0),
+      
+    position_center: RandomScalar( offset:(-2.0,-2.0,-2.0),multiplier:(4.0,4.0,4.0) )  ,
+    position_radius: RandomScalar( offset:0.0,multiplier:8.0 ),
+    
+    velocity_center: RandomScalar( offset:(-2.0,-0.2,0.2),multiplier:(0.0,1.0,4.0) )  ,
+    velocity_speed: RandomScalar( offset:0.0,multiplier:8.0 ),
+    
+    
+    rotation: RandomScalar (offset: 0.0, multiplier: 6.28 ) ,
+    alpha_cutoff: TimeSinewave (time_scalar: 2.0, multiplier: 0.3, offset: 0.4)
+)

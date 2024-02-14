@@ -11,6 +11,10 @@
 //! lifetime, give a subtle effect of particles appearing to fall down right
 //! before they disappear, like sparkles fading away.
 
+use std::fs::File;
+use std::io::Read;
+
+
 use bevy::{
     core_pipeline::{
         bloom::BloomSettings, clear_color::ClearColorConfig, tonemapping::Tonemapping,
@@ -27,8 +31,10 @@ use bevy_hanabi::prelude::*;
 use hanabi_effect_builder::HanabiEffectBuilder;
 use particle_types::{portal::PortalEffectBuilder, billboard::BillboardEffectBuilder};
 
-mod hanabi_effect_builder;
-mod particle_types;
+pub mod hanabi_effect_builder;
+pub mod particle_types;
+
+pub mod util;
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     
@@ -75,7 +81,7 @@ fn setup(
     mut effects: ResMut<Assets<EffectAsset>>,
     asset_server: Res<AssetServer>
     
-    ) {
+    )   {
     commands.spawn((
         Camera3dBundle {
             transform: Transform::from_translation(Vec3::new(0., 0., 25.)),
@@ -100,7 +106,7 @@ fn setup(
     image_handle_map.insert( "cloud".into(),asset_server.load("cloud.png")  );
     
     
-    
+    /*
   let effect_builder = HanabiEffectBuilder::Portal(PortalEffectBuilder {
         name: "portal".into(),
         color_gradient_keys: vec![
@@ -119,13 +125,12 @@ fn setup(
         initial_velocity: Vec3::ZERO, // This might need to be adjusted based on specific effect requirements
         tangent_acceleration: 30.0,
     });
-
+ 
     
     
-    let effect_handle = effects.add( effect_builder.build(  image_handle_map ).unwrap() );
+    let effect_handle = effects.add( effect_builder.build(  &image_handle_map ).unwrap() );
     
     
-
     commands.spawn((
         Name::new("portal"),
         ParticleEffectBundle {
@@ -134,20 +139,23 @@ fn setup(
             ..Default::default()
         },
     )); 
+    */
     
     
-  let effect_builder = HanabiEffectBuilder::Billboard(BillboardEffectBuilder {
-        name: "billboard".into(),
-        texture_name: "cloud".into()
-    });
-
+    
+    
+    
+    let mut file = File::open("assets/cloud.bvfx").unwrap();
+    let mut contents = String::new(); 
+    file.read_to_string(&mut contents).unwrap();
+    let effect_builder: BillboardEffectBuilder = ron::from_str(&contents).unwrap();
+     
+     
     let mut image_handle_map:HashMap<String,Handle<Image>> = HashMap::new();
     image_handle_map.insert( "cloud".into(),asset_server.load("cloud.png")  );
-    
-    
-    let effect_handle = effects.add( effect_builder.build(  image_handle_map ).unwrap() );
-    
-    
+     
+    let effect_handle = effects.add( effect_builder.build(  &image_handle_map ).unwrap() );
+     
 
     commands.spawn((
         Name::new("billboard"),

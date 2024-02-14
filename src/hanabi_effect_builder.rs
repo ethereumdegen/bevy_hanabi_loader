@@ -26,7 +26,7 @@ pub(crate) enum HanabiEffectBuilder {
 impl HanabiEffectBuilder{
     
     pub fn build(&self,
-        image_handle_map: HashMap<String, Handle<Image>>
+        image_handle_map: &HashMap<String, Handle<Image>>
         ) -> Option<EffectAsset> {
             
         
