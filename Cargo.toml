@@ -2,7 +2,7 @@
 name = "bevy_hanabi_loader"
 description = "A wrapper around bevy_hanabi that lets you define your vfx files in RON format and load them into bevy"
 license = "MIT"
-version = "0.2.4"
+version = "0.2.5"
 edition = "2021"
 
 [lib]

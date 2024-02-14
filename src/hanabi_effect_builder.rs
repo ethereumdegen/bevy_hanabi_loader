@@ -37,6 +37,17 @@ impl HanabiEffectBuilder{
         
         
     }
+
+       
+    pub fn get_name(&self ) -> &String { 
+        
+        match self {
+            HanabiEffectBuilder::Portal(portal) => &portal.name,
+            HanabiEffectBuilder::Billboard(billboard) => &billboard.name   
+        }
+        
+        
+    }
 }
 
 impl TypePath for HanabiEffectBuilder {
