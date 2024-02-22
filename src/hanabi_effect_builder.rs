@@ -53,10 +53,10 @@ impl HanabiEffectBuilder{
 impl TypePath for HanabiEffectBuilder {
     
       fn short_type_path() -> &'static str {
-        "bvfx"
+        "hvfx.ron"
        }
        fn type_path() -> &'static str {
-        "bvfx"
+        "hvfx.ron"
        }
     
 }
