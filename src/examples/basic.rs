@@ -16,8 +16,9 @@ use std::io::Read;
 
 
 use bevy::{
+    render::camera::ClearColorConfig,
     core_pipeline::{
-        bloom::BloomSettings, clear_color::ClearColorConfig, tonemapping::Tonemapping,
+        bloom::BloomSettings,   tonemapping::Tonemapping,
     },
     log::LogPlugin,
     prelude::*, render::{settings::WgpuSettings, render_resource::WgpuFeatures, RenderPlugin}, utils::HashMap,
@@ -46,12 +47,16 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         .add_plugins(
             DefaultPlugins
                 .set(LogPlugin {
+                     
                     level: bevy::log::Level::WARN,
                     filter: "bevy_hanabi=warn,portal=trace".to_string(),
+                    ..default()
                 })
                 
                  .set(RenderPlugin {
+                  //  synchronous_pipeline_compilation: false,
                     render_creation: wgpu_settings.into(),
+                    ..default()
                 })  //need me for billboards !? 
                 
                 
@@ -82,11 +87,12 @@ fn setup(
         Camera3dBundle {
             transform: Transform::from_translation(Vec3::new(0., 0., 25.)),
             camera: Camera {
+                clear_color: ClearColorConfig::Custom(Color::BLACK),
                 hdr: true,
                 ..default()
             },
             camera_3d: Camera3d {
-                clear_color: ClearColorConfig::Custom(Color::BLACK),
+                
                 ..default()
             },
             tonemapping: Tonemapping::None,
