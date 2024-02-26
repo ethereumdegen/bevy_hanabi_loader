@@ -113,7 +113,7 @@ impl BillboardEffectBuilder   {
     let effect =  
         EffectAsset::new(32768, Spawner::rate(64.0.into()), module)
             .with_name("billboard")
-            .with_alpha_mode(bevy_hanabi::AlphaMode::Mask(alpha_cutoff))
+            .with_alpha_mode(bevy_hanabi::AlphaMode::Blend)
             .init (init_pos  )
             .init (init_vel )
             .init(init_age)
