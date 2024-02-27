@@ -10,6 +10,8 @@ use crate::util::{AlgebraicCurve, AlgebraicVector};
 #[derive(Debug, Serialize, Deserialize)]
 pub struct BillboardEffectBuilder {
     pub name: String,
+
+    pub spawn_rate: f32,
     
     pub age: AlgebraicCurve,
     pub lifetime: AlgebraicCurve,
@@ -109,9 +111,12 @@ impl BillboardEffectBuilder   {
     let rotation_attr = writer.attr(Attribute::F32_0).expr();
 
     let   module = writer.finish();
+
+
+    let spawn_rate = self.spawn_rate.clone().into();
         
     let effect =  
-        EffectAsset::new(32768, Spawner::rate(64.0.into()), module)
+        EffectAsset::new(32768, Spawner::rate(spawn_rate), module)
             .with_name("billboard")
             .with_alpha_mode(bevy_hanabi::AlphaMode::Blend)
             .init (init_pos  )
