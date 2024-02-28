@@ -11,6 +11,7 @@ use crate::util::{AlgebraicCurve, AlgebraicVector};
 pub struct BillboardEffectBuilder {
     pub name: String,
 
+    pub size: f32,
     pub spawn_rate: f32,
     
     pub age: AlgebraicCurve,
@@ -114,6 +115,7 @@ impl BillboardEffectBuilder   {
 
 
     let spawn_rate = self.spawn_rate.clone().into();
+    let size = self.size.clone().into();
         
     let effect =  
         EffectAsset::new(32768, Spawner::rate(spawn_rate), module)
@@ -134,7 +136,7 @@ impl BillboardEffectBuilder   {
                 rotation: Some(rotation_attr),
             })
             .render(SizeOverLifetimeModifier {
-                gradient: Gradient::constant([0.2; 2].into()),
+                gradient: Gradient::constant([size; 2].into()),
                 screen_space_size: false,
             })   ;
         
