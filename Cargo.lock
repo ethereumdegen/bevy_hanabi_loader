@@ -695,7 +695,7 @@ dependencies = [
 
 [[package]]
 name = "bevy_hanabi_loader"
-version = "0.13.0"
+version = "0.13.1"
 dependencies = [
  "bevy",
  "bevy-inspector-egui",
