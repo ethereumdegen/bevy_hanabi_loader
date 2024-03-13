@@ -1,6 +1,8 @@
 BillboardEffectBuilder(
     name: "CloudBillboard",
     texture_name: "cloud",
+
+    spawn_rate: 5.0,
     
     age: Constant(0.0),
     lifetime: Constant(5.0),
