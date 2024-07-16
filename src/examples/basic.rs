@@ -68,7 +68,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
                     ..default()
                 }),
         )
-        .add_systems(Update, bevy::window::close_on_esc)
+      //  .add_systems(Update, bevy::window::close_on_esc)
         .add_plugins(HanabiPlugin)
         .add_plugins(WorldInspectorPlugin::default())
         .add_systems(Startup, setup)

@@ -65,7 +65,7 @@ impl PortalEffectBuilder {
         let tangent_accel = TangentAccelModifier::constant(&mut module, self.initial_velocity, Vec3::Z, self.tangent_acceleration);
 
         let effect =  
-            EffectAsset::new(32768, Spawner::rate(self.spawn_rate.into()), module)
+            EffectAsset::new(vec![32768], Spawner::rate(self.spawn_rate.into()), module)
                 .with_name(self.name.clone())
                 .init(init_pos)
                  .init(init_age)

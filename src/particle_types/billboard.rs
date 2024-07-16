@@ -114,7 +114,7 @@ impl BillboardEffectBuilder   {
     let spawn_rate = self.spawn_rate.clone().into();
         
     let effect =  
-        EffectAsset::new(32768, Spawner::rate(spawn_rate), module)
+        EffectAsset::new(vec![32768], Spawner::rate(spawn_rate), module)
             .with_name("billboard")
             .with_alpha_mode(bevy_hanabi::AlphaMode::Blend)
             .init (init_pos  )
