@@ -125,7 +125,8 @@ fn setup(
     let built_hanabi_effect = effect_builder.build(  &image_handle_map ).unwrap() ;
      
     let effect_handle = effects.add( built_hanabi_effect.effect_asset );
-     
+    
+    let texture_handle = built_hanabi_effect.effect_material.unwrap().images.first().unwrap().clone();
 
     commands.spawn((
         Name::new("billboard"),
@@ -135,11 +136,11 @@ fn setup(
             ..Default::default()
         },
 
-        /*  
+           
          EffectMaterial {
             images: vec![texture_handle],
         },
 
-        */
+        
     ));
 }
