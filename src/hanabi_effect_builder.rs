@@ -17,17 +17,25 @@ use bevy_hanabi::prelude::*;
 use crate::particle_types::{portal::PortalEffectBuilder, billboard::BillboardEffectBuilder};
 
 
+#[derive(  Clone )]
+pub struct BuiltHanabiEffect {
+
+    pub effect_asset: EffectAsset,
+    pub effect_material: Option<EffectMaterial>
+}
+
 #[derive(Asset, Debug, Serialize, Deserialize)]
 pub  enum HanabiEffectBuilder {
     Portal(PortalEffectBuilder),
     Billboard(BillboardEffectBuilder)
 }
 
+
 impl HanabiEffectBuilder{
     
     pub fn build(&self,
         image_handle_map: &HashMap<String, Handle<Image>>
-        ) -> Option<EffectAsset> {
+        ) -> Option< BuiltHanabiEffect > {
             
         
         match self {

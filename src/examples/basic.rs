@@ -121,8 +121,10 @@ fn setup(
      
     let mut image_handle_map:HashMap<String,Handle<Image>> = HashMap::new();
     image_handle_map.insert( "cloud".into(),asset_server.load("cloud.png")  );
+
+    let built_hanabi_effect = effect_builder.build(  &image_handle_map ).unwrap() ;
      
-    let effect_handle = effects.add( effect_builder.build(  &image_handle_map ).unwrap() );
+    let effect_handle = effects.add( built_hanabi_effect.effect_asset );
      
 
     commands.spawn((
@@ -132,5 +134,12 @@ fn setup(
             transform: Transform::IDENTITY,
             ..Default::default()
         },
+
+        /*  
+         EffectMaterial {
+            images: vec![texture_handle],
+        },
+
+        */
     ));
 }

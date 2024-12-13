@@ -4,7 +4,7 @@ use bevy::{prelude::*, render::render_resource::{Extent3d, TextureDimension, Tex
 use bevy_hanabi::prelude::*;
 use std::{error::Error, str::Bytes};
 
-use crate::util::{AlgebraicCurve, AlgebraicVector};
+use crate::{hanabi_effect_builder::BuiltHanabiEffect, util::{AlgebraicCurve, AlgebraicVector}};
 
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -45,7 +45,7 @@ impl BillboardEffectBuilder   {
         image_handle_map: &HashMap<String, Handle<Image>>,
         
         
-        ) -> Option< EffectAsset > {
+        ) -> Option<  BuiltHanabiEffect > {
           
       
     let texture_handle  = image_handle_map.get( &self.texture_name )?;
@@ -109,12 +109,19 @@ impl BillboardEffectBuilder   {
     // per-particle rotation)
     let rotation_attr = writer.attr(Attribute::F32_0).expr();
 
-    let   module = writer.finish();
+      let texture_slot = writer.lit(0u32).expr();
+
+    let   mut module = writer.finish();
+
+    module.add_texture_slot("color");
+
 
     let spawn_rate = self.spawn_rate.clone().into();
+
+    let size_over_lifetime = Gradient::constant([0.2; 3].into()); // for now 
         
-    let effect =  
-        EffectAsset::new(vec![32768], Spawner::rate(spawn_rate), module)
+    let effect_asset =  
+        EffectAsset::new( 32768 , Spawner::rate(spawn_rate), module)
             .with_name("billboard")
             .with_alpha_mode(bevy_hanabi::AlphaMode::Blend)
             .init (init_pos  )
@@ -124,7 +131,7 @@ impl BillboardEffectBuilder   {
             .init(init_rotation)
             .init(init_color)
             .render(ParticleTextureModifier {
-                texture: texture_handle.clone(),
+                texture_slot: texture_slot , // this is so weird !! 
                 sample_mapping: ImageSampleMapping::ModulateOpacityFromR,
             })
             .render(OrientModifier {
@@ -132,12 +139,18 @@ impl BillboardEffectBuilder   {
                 rotation: Some(rotation_attr),
             })
             .render(SizeOverLifetimeModifier {
-                gradient: Gradient::constant([0.2; 2].into()),
+                gradient:  size_over_lifetime ,
                 screen_space_size: false,
             })   ;
+
+    let effect_material = EffectMaterial {
+            images: vec![texture_handle.clone()],
+        };
+
+       
         
 
-        Some(effect)
+        Some(BuiltHanabiEffect{ effect_asset, effect_material: Some(effect_material)})
     }
 }
 

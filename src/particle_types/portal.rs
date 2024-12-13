@@ -1,4 +1,5 @@
 
+use crate::hanabi_effect_builder::BuiltHanabiEffect;
 use serde::{Serialize, Deserialize};
 use bevy::{prelude::*, utils::HashMap};
 use bevy_hanabi::prelude::*;
@@ -8,7 +9,7 @@ use std::error::Error;
 pub struct PortalEffectBuilder {
     pub name: String,
     pub color_gradient_keys: Vec<(f32, Vec4)>,
-    pub size_gradient_keys: Vec<(f32, Vec2)>,
+    pub size_gradient_keys: Vec<(f32, Vec3)>,
     pub spawn_rate: f32,
     pub particle_lifetime_min: f32,
     pub particle_lifetime_max: f32,
@@ -25,7 +26,7 @@ impl PortalEffectBuilder {
         &self,
         
         
-        ) -> Option<EffectAsset> {
+        ) -> Option<BuiltHanabiEffect> {
          
         
         let mut color_gradient = Gradient::new();
@@ -64,8 +65,8 @@ impl PortalEffectBuilder {
      
         let tangent_accel = TangentAccelModifier::constant(&mut module, self.initial_velocity, Vec3::Z, self.tangent_acceleration);
 
-        let effect =  
-            EffectAsset::new(vec![32768], Spawner::rate(self.spawn_rate.into()), module)
+        let effect_asset =  
+            EffectAsset::new( 32768 , Spawner::rate(self.spawn_rate.into()), module)
                 .with_name(self.name.clone())
                 .init(init_pos)
                  .init(init_age)
@@ -83,7 +84,7 @@ impl PortalEffectBuilder {
         
 
     
-
-        Some(effect)
+         Some( BuiltHanabiEffect{ effect_asset, effect_material: None } )
+         
     }
 }
