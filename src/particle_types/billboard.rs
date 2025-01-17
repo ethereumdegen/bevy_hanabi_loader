@@ -48,8 +48,15 @@ impl BillboardEffectBuilder   {
         ) -> Option<  BuiltHanabiEffect > {
           
       
-    let texture_handle  = image_handle_map.get( &self.texture_name )?;
-    
+    //let texture_handle  = image_handle_map.get( &self.texture_name )?;
+      let texture_handle = match image_handle_map.get(&self.texture_name) {
+            Some(handle) => handle,
+            None => {
+                println!("No texture found - is it registered ? : {}", &self.texture_name);
+                return None;
+            }
+        };
+
 
     let writer = ExprWriter::new();
 
