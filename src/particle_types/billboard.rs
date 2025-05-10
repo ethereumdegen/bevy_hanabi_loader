@@ -1,7 +1,11 @@
 
 use serde::{Serialize, Deserialize};
-use bevy::{prelude::*, render::render_resource::{Extent3d, TextureDimension, TextureFormat, TextureDescriptor, TextureUsages}, utils::HashMap};
+use bevy::{prelude::*,  };
 use bevy_hanabi::prelude::*;
+
+
+use bevy::platform::collections::hash_map::HashMap ;
+
 use std::{error::Error, str::Bytes};
 
 use crate::{hanabi_effect_builder::BuiltHanabiEffect, util::{AlgebraicCurve, AlgebraicVector}};
@@ -128,7 +132,7 @@ impl BillboardEffectBuilder   {
     let size_over_lifetime = Gradient::constant([0.2; 3].into()); // for now 
         
     let effect_asset =  
-        EffectAsset::new( 32768 , Spawner::rate(spawn_rate), module)
+        EffectAsset::new( 32768 , SpawnerSettings::rate(spawn_rate),  module)
             .with_name("billboard")
             .with_alpha_mode(bevy_hanabi::AlphaMode::Blend)
             .init (init_pos  )

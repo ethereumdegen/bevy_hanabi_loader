@@ -10,18 +10,17 @@
 //! The addition of some gravity and drag, combined with a careful choice of
 //! lifetime, give a subtle effect of particles appearing to fall down right
 //! before they disappear, like sparkles fading away.
+ use bevy_egui::EguiPlugin;
 
+use bevy::platform::collections::hash_map::HashMap; 
 use std::fs::File;
 use std::io::Read;
 
 
 use bevy::{
-    render::camera::ClearColorConfig,
     core_pipeline::{
-        bloom::BloomSettings,   tonemapping::Tonemapping,
-    },
-    log::LogPlugin,
-    prelude::*, render::{settings::WgpuSettings, render_resource::WgpuFeatures, RenderPlugin}, utils::HashMap,
+           bloom::Bloom, tonemapping::Tonemapping
+    }, log::LogPlugin, prelude::*, render::{camera::ClearColorConfig, render_resource::WgpuFeatures, settings::WgpuSettings, RenderPlugin},  
 };
 
 use bevy_hanabi_loader::particle_types::billboard::BillboardEffectBuilder;
@@ -70,8 +69,13 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         )
       //  .add_systems(Update, bevy::window::close_on_esc)
         .add_plugins(HanabiPlugin)
-        .add_plugins(WorldInspectorPlugin::default())
+      
         .add_systems(Startup, setup)
+        
+        .add_plugins(EguiPlugin { enable_multipass_for_primary_context: true })
+
+          .add_plugins(WorldInspectorPlugin::default())
+
         .run();
 
     Ok(())
@@ -84,21 +88,24 @@ fn setup(
     
     )   {
     commands.spawn((
-        Camera3dBundle {
-            transform: Transform::from_translation(Vec3::new(0., 0., 25.)),
-            camera: Camera {
+
+        Camera {
                 clear_color: ClearColorConfig::Custom(Color::BLACK),
                 hdr: true,
                 ..default()
             },
-            camera_3d: Camera3d {
-                
-                ..default()
-            },
-            tonemapping: Tonemapping::None,
+
+        Camera3d {
+            
             ..default()
         },
-        BloomSettings::default(),
+
+        Tonemapping::None,
+        Transform::from_translation(Vec3::new(0., 0., 25.)),
+
+
+ 
+        Bloom ::default(),
     ));
 
   
@@ -130,12 +137,13 @@ fn setup(
 
     commands.spawn((
         Name::new("billboard"),
-        ParticleEffectBundle {
-            effect: ParticleEffect::new(effect_handle),
-            transform: Transform::IDENTITY,
-            ..Default::default()
-        },
 
+         ParticleEffect::new(effect_handle),
+         Transform::IDENTITY,
+         Visibility::default() , 
+        
+
+    
            
          EffectMaterial {
             images: vec![texture_handle],
