@@ -3,7 +3,7 @@ use crate::hanabi_effect_builder::BuiltHanabiEffect;
 use serde::{Serialize, Deserialize};
 use bevy::{prelude::* };
 
-
+use bevy_hanabi::prelude::Gradient as HanabiGradient ;
 
 use bevy_hanabi::prelude::*;
 use std::error::Error;
@@ -32,12 +32,12 @@ impl PortalEffectBuilder {
         ) -> Option<BuiltHanabiEffect> {
          
         
-        let mut color_gradient = Gradient::new();
+        let mut color_gradient = HanabiGradient::new();
         for (time, color) in &self.color_gradient_keys {
             color_gradient.add_key(*time, *color);
         }
 
-        let mut size_gradient = Gradient::new();
+        let mut size_gradient = HanabiGradient::new();
         for (time, size) in &self.size_gradient_keys {
             size_gradient.add_key(*time, *size);
         }

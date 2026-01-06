@@ -17,10 +17,19 @@ use std::fs::File;
 use std::io::Read;
 
 
+
+use bevy::{
+   
+    post_process::bloom::{Bloom, BloomCompositeMode},
+   
+};
+
+
+
 use bevy::{
     core_pipeline::{
-           bloom::Bloom, tonemapping::Tonemapping
-    }, log::LogPlugin, prelude::*, render::{camera::ClearColorConfig, render_resource::WgpuFeatures, settings::WgpuSettings, RenderPlugin},  
+        tonemapping::Tonemapping
+    }, log::LogPlugin, prelude::*, render::{  render_resource::WgpuFeatures, settings::WgpuSettings, RenderPlugin},  
 };
 
 use bevy_hanabi_loader::particle_types::billboard::BillboardEffectBuilder;
@@ -72,7 +81,7 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
       
         .add_systems(Startup, setup)
         
-        .add_plugins(EguiPlugin { enable_multipass_for_primary_context: true })
+        .add_plugins(EguiPlugin ::default() )
 
           .add_plugins(WorldInspectorPlugin::default())
 
@@ -90,8 +99,8 @@ fn setup(
     commands.spawn((
 
         Camera {
-                clear_color: ClearColorConfig::Custom(Color::BLACK),
-                hdr: true,
+              //  clear_color: ClearColorConfig::Custom(Color::BLACK),
+              //  hdr: true,
                 ..default()
             },
 

@@ -4,6 +4,7 @@ use bevy::{prelude::*,  };
 use bevy_hanabi::prelude::*;
 
 
+use bevy_hanabi::prelude::Gradient as HanabiGradient ;
 use bevy::platform::collections::hash_map::HashMap ;
 
 use std::{error::Error, str::Bytes};
@@ -129,7 +130,7 @@ impl BillboardEffectBuilder   {
 
     let spawn_rate = self.spawn_rate.clone().into();
 
-    let size_over_lifetime = Gradient::constant([0.2; 3].into()); // for now 
+    let size_over_lifetime = HanabiGradient::constant([0.2; 3].into()); // for now 
         
     let effect_asset =  
         EffectAsset::new( 32768 , SpawnerSettings::rate(spawn_rate),  module)
