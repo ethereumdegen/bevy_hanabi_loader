@@ -2,7 +2,7 @@
 name = "bevy_hanabi_loader"
 description = "A wrapper around bevy_hanabi that lets you define your vfx files in RON format and load them into bevy"
 license = "MIT"
-version = "0.17.1"
+version = "0.19.0"
 edition = "2024"
 
 
@@ -12,16 +12,16 @@ name = "bevy_hanabi_loader"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-bevy = {version="0.17.0",features=[ "bevy_render", "bevy_asset"] }
+bevy = {version="0.19.1",features=[ "bevy_render", "bevy_asset"] }
 
-bevy_hanabi = "0.17"
+bevy_hanabi = "0.19"
 image = "0.25.2"
 ron = "0.8.1"
 serde = { version = "1.0", features = ["derive"] }
 
 [dev-dependencies]
-bevy-inspector-egui = "0.35.0"
-bevy_egui = "0.38.0"
+bevy-inspector-egui = "0.37.0"
+bevy_egui = "0.42.0"
 
 
 [[example]]
